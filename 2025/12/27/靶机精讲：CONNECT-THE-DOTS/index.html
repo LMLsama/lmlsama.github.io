@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>靶机精讲：CONNECT THE DOTS | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="CONNECT THE DOTS - 不懂jsfuck，polkit，图片隐写，莫尔斯码和断电隐患，你可能玩不转这台靶机。「红队笔记」靶机精讲之CONNECT THE DOTS ，又一台考验你的知识面的机器，至少涉及jsfuck、nfs、ftp多文件读取、getcap获取文件能力、polkit、文件图片隐写、莫尔斯码和断电隐患等知识，如果不理解这些知识点，你可能玩不转这台靶机。加油吧，少年。 参考">
+<meta property="og:type" content="article">
+<meta property="og:title" content="靶机精讲：CONNECT THE DOTS">
+<meta property="og:url" content="https://lmlsama.github.io/2025/12/27/%E9%9D%B6%E6%9C%BA%E7%B2%BE%E8%AE%B2%EF%BC%9ACONNECT-THE-DOTS/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="CONNECT THE DOTS - 不懂jsfuck，polkit，图片隐写，莫尔斯码和断电隐患，你可能玩不转这台靶机。「红队笔记」靶机精讲之CONNECT THE DOTS ，又一台考验你的知识面的机器，至少涉及jsfuck、nfs、ftp多文件读取、getcap获取文件能力、polkit、文件图片隐写、莫尔斯码和断电隐患等知识，如果不理解这些知识点，你可能玩不转这台靶机。加油吧，少年。 参考">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-27T05:22:33.000Z">
+<meta property="article:modified_time" content="2025-12-27T05:32:09.542Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://LMLsama.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-靶机精讲：CONNECT-THE-DOTS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/27/%E9%9D%B6%E6%9C%BA%E7%B2%BE%E8%AE%B2%EF%BC%9ACONNECT-THE-DOTS/" class="article-date">
+  <time class="dt-published" datetime="2025-12-27T05:22:33.000Z" itemprop="datePublished">2025-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      靶机精讲：CONNECT THE DOTS
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CONNECT-THE-DOTS-不懂jsfuck，polkit，图片隐写，莫尔斯码和断电隐患，你可能玩不转这台靶机。"><a href="#CONNECT-THE-DOTS-不懂jsfuck，polkit，图片隐写，莫尔斯码和断电隐患，你可能玩不转这台靶机。" class="headerlink" title="CONNECT THE DOTS - 不懂jsfuck，polkit，图片隐写，莫尔斯码和断电隐患，你可能玩不转这台靶机。"></a>CONNECT THE DOTS - 不懂jsfuck，polkit，图片隐写，莫尔斯码和断电隐患，你可能玩不转这台靶机。</h1><p>「红队笔记」靶机精讲之CONNECT THE DOTS ，又一台考验你的知识面的机器，至少涉及jsfuck、nfs、ftp多文件读取、getcap获取文件能力、polkit、文件图片隐写、莫尔斯码和断电隐患等知识，如果不理解这些知识点，你可能玩不转这台靶机。加油吧，少年。</p>
+<p>参考视频：【「红队笔记」靶机精讲：CONNECT THE DOTS - 不懂jsfuck，polkit，图片隐写，莫尔斯码和断电隐患，你可能玩不转这台靶机。】<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vP411d7Lk?vd_source=4d00741bef1efdd09444b6c478d355a0">https://www.bilibili.com/video/BV1vP411d7Lk?vd_source=4d00741bef1efdd09444b6c478d355a0</a></p>
+<hr>
+<h2 id="nmap扫描"><a href="#nmap扫描" class="headerlink" title="nmap扫描"></a>nmap扫描</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> nmap -sn 10.10.10.0/24</span><br><span class="line"><span class="built_in">sudo</span> nmap -sT --min-rate 10000 -p- ip</span><br><span class="line"><span class="built_in">sudo</span> nmap -sU --min-rate 10000 -p- ip</span><br><span class="line"><span class="built_in">sudo</span> nmap -sT -sV -sC -O -p,,, ip</span><br><span class="line"><span class="built_in">sudo</span> nmap --script=vuln -p,,, ip</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lmlsama.github.io/2025/12/27/%E9%9D%B6%E6%9C%BA%E7%B2%BE%E8%AE%B2%EF%BC%9ACONNECT-THE-DOTS/" data-id="cuid-f1HcUr-932NBIZvWqCNM" data-title="靶机精讲：CONNECT THE DOTS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/12/27/test1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/12/26/%E6%8F%90%E6%9D%83%E7%B2%BE%E8%AE%B2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">提权精讲</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">December 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/12/27/test1/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/27/%E9%9D%B6%E6%9C%BA%E7%B2%BE%E8%AE%B2%EF%BC%9ACONNECT-THE-DOTS/">靶机精讲：CONNECT THE DOTS</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/26/%E6%8F%90%E6%9D%83%E7%B2%BE%E8%AE%B2/">提权精讲</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

